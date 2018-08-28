@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class="container">
+  
+      <text class="userinfo-nickname" bindtap="viewTa">{{userInfo.nickName}}</text>
+      <text >{{num}}</text>
+</view>

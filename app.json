@@ -1,0 +1,27 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/index1/index1",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "摇一摇",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "摇吧"
+    },
+    {
+      "pagePath": "pages/index1/index1",
+      "text": "选课"
+    },
+    {
+      "pagePath": "pages/logs/logs",
+      "text": "我的"
+    }]
+  }
+}
