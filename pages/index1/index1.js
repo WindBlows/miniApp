@@ -7,7 +7,7 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    num: 0
+    num: 10
   },
 
   //摇一摇时间
@@ -57,18 +57,21 @@ Page({
   isShow: false,
   onShow: function () {
     var lastTime = 0; //此变量用来记录上次摇动的时间
+    var self = this;
     var x = 0,
       y = 0,
       z = 0,
       lastX = 0,
       lastY = 0,
       lastZ = 0; //此组变量分别记录对应x、y、z三轴的数值和上次的数值
-    var shakeSpeed = 110; //设置阈值
+    var shakeSpeed = 50; //设置阈值
+    
     //编写摇一摇方法
     function shake(acceleration) {
+      
       var nowTime = new Date().getTime(); //记录当前时间
       //如果这次摇的时间距离上次摇的时间有一定间隔 才执行
-      if (nowTime - lastTime > 100) {
+      if (nowTime - lastTime > 150) {
         var diffTime = nowTime - lastTime; //记录时间段
         lastTime = nowTime; //记录本次摇动时间，为下次计算摇动时间做准备
         x = acceleration.x; //获取x轴数值，x轴为垂直于北轴，向东为正
@@ -77,12 +80,13 @@ Page({
         //计算 公式的意思是 单位时间内运动的路程，即为我们想要的速度
         var speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
         //console.log(speed)
+        
         if (speed > shakeSpeed) { //如果计算出来的速度超过了阈值，那么就算作用户成功摇一摇
-          wx.stopAccelerometer()
+          //wx.stopAccelerometer()
           self.setData({
             hasInit: false,
             canvas: {},
-            num: this.data.num + 1
+            num: self.data.num + 1
           })
         }
         lastX = x; //赋值，为下一次计算做准备
@@ -90,7 +94,31 @@ Page({
         lastZ = z; //赋值，为下一次计算做准备
       }
     }
-    wx.onAccelerometerChange(shake)
+    
+    wx.onAccelerometerChange(shake);
+    const socketOpen = true
+    const socketMsgQueue = []
+
+    wx.connectSocket({
+      url: 'ws://127.0.0.1:2000',
+    }),
+
+    wx.onSocketOpen(function (res) {
+      console.log('WebSocket连接已打开！');
+      //socketOpen = true
+      sendSocketMessage(self.data.num)
+    })
+
+    function sendSocketMessage(msg) {
+      if (socketOpen) {
+        wx.sendSocketMessage({
+          data: msg
+        })
+        console.log("发送成功" + msg)
+      } else {
+        socketMsgQueue.push(msg)
+      }
+    }
   },
 
   onHide: function () {

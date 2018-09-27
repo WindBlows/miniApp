@@ -64,11 +64,12 @@ Page({
       }
       //console.log(e.x);
       //console.log(e.y);
-      if ((e.x > 1 || e.x < -1) && (e.y > 0.1 || e.y < -0.1) ) {
-        console.log(e.y);
-        that.setData({
-          num: that.data.num + 1
-        })
+      if ((e.x > 0.3 || e.x < -0.3) && (e.y > 0.3 || e.y < -0.3)) {
+        if (e.z > 0.3) {
+          that.setData({
+            num: that.data.num + 1
+          })
+        }
       }
       
     })

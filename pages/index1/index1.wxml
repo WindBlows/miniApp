@@ -2,5 +2,5 @@
 <view class="container">
   
       <text class="userinfo-nickname" bindtap="viewTa">{{userInfo.nickName}}</text>
-      <text >{{num}}</text>
+      <text style='font-size:150px'>{{num}}</text>
 </view>
